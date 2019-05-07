@@ -31,10 +31,11 @@ class ConnectionFactory(BaseFactory):
     """Connection factory."""
 
     connection_type = 'friend'
-
     from_person = SubFactory(PersonFactory)
     to_person = SubFactory(PersonFactory)
 
     class Meta:
 
         model = Connection
+        # Maybe wrong method?
+        exclude = ['from_person', 'to_person']

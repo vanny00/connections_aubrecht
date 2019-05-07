@@ -12,6 +12,9 @@ class BaseModelSchema(ma.ModelSchema):
 
 
 class PersonSchema(BaseModelSchema):
+    first_name = fields.Str()
+    last_name = fields.Str()
+    email = fields.Email()
 
     class Meta:
         model = Person
