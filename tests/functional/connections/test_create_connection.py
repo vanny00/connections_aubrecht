@@ -1,7 +1,6 @@
 from http import HTTPStatus
 
 import pytest
-
 from tests.factories import PersonFactory
 
 from connections.models.connection import Connection
@@ -15,7 +14,7 @@ def connection_payload(db):
     return {
         'connection_type': 'mother',
         'from_person_id': person_from.id,
-        'to_person_id': person_to.id,        
+        'to_person_id': person_to.id,
     }
 
 
@@ -38,23 +37,25 @@ def test_can_create_connection(db, testapp, connection_payload):
         else:
             assert getattr(connection, field) == connection_payload[field]
 
-#Note: Passing - However, foobar enum method requires deeper analysis
+# Note: Passing - However, foobar enum method requires deeper analysis
+
+
 @pytest.mark.parametrize('field, value, error_message', [
-    pytest.param('from_person_id', None, 'Field may not be null.', id='missing from person connection'),
-    pytest.param('to_person_id', None, 'Field may not be null.', id='missing to person connection'),
-    pytest.param('connection_type', None, 'Field may not be null.', id='missing connection_type'),
-    pytest.param('connection_type', 'foobar', 'Invalid enum member foobar', id='invalid connection_type'),
+    pytest.param('from_person_id', None, 'Field may not be null.',
+                 id='missing from person connection'),
+    pytest.param('to_person_id', None, 'Field may not be null.',
+                 id='missing to person connection'),
+    pytest.param('connection_type', None, 'Field may not be null.',
+                 id='missing connection_type'),
+    pytest.param('connection_type', 'foobar', 'Invalid enum member foobar',
+                 id='invalid connection_type'),
 ])
-
-
-def test_create_connection_validations(db, testapp, connection_payload, field, value, error_message):
+def test_create_connection_validations(db, testapp, connection_payload,
+                                       field, value, error_message):
 
     connection_payload[field] = value
     res = testapp.post('/connections', json=connection_payload)
-
     assert res.status_code == HTTPStatus.BAD_REQUEST
     assert res.json['description'] == 'Input failed validation.'
     errors = res.json['errors']
-    assert error_message in errors[field]            
-
-
+    assert error_message in errors[field]

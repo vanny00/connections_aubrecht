@@ -37,5 +37,5 @@ class ConnectionFactory(BaseFactory):
     class Meta:
 
         model = Connection
-        # Maybe wrong method?
+        #   rename = {'from_person' : 'from_person_id', 'to_person' : 'to_person_id'}
         exclude = ['from_person', 'to_person']
