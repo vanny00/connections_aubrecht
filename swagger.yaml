@@ -48,6 +48,21 @@ paths:
         400:
           description: "Invalid input"
   /connections:
+    get:
+      summary: "Get list of connections"
+      description: ""
+      operationId: "getConnections"
+      produces:
+      - "application/json"
+      responses:        
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Connection"
+        400:
+          description: "Invalid input"
     post:
       summary: "Create a new connection"
       description: ""
@@ -72,6 +87,54 @@ paths:
               $ref: "#/definitions/Connection"
         400:
           description: "Invalid input"
+    patch:
+      summary: "Update a connection type"
+      description: ""
+      operationId: "patchConnection"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Connection object that needs to be patched"
+        required: true
+        schema:
+          $ref: "#/definitions/Connection"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            items:
+              $ref: "#/definitions/Connection"
+        400:
+          description: "Invalid input"
+      delete:
+        summary: "Delete a connection"
+        description: ""
+        operationId: "deleteConnection"
+        consumes:
+        - "application/json"
+        produces:
+        - "application/json"
+        parameters:
+        - in: "body"
+          name: "body"
+          description: "Connection object that needs to be deleted"
+          required: true
+          schema:
+            $ref: "#/definitions/Connection"
+        responses:
+          200:
+            description: "successful operation"
+            schema:
+              type: "object"
+              items:
+                $ref: "#/definitions/Connection"
+          400:
+            description: "Invalid input"
 definitions:
   Person:
     type: "object"
