@@ -27,3 +27,9 @@ class ConnectionSchema(BaseModelSchema):
 
     class Meta:
         model = Connection
+
+
+class ConnectionPersonSchema(BaseModelSchema):
+    connection = fields.Nested(ConnectionSchema)
+    from_person = fields.Nested(PersonSchema)
+    to_person = fields.Nested(PersonSchema)

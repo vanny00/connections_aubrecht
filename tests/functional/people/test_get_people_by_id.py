@@ -1,7 +1,11 @@
+from http import HTTPStatus
+
+import pytest
 from tests.factories import ConnectionFactory, PersonFactory
 
 
-def test_mutual_friends(db):
+@pytest.mark.xfail
+def test_can_get_people_by_id_mutual_friends(db, testapp):
     instance = PersonFactory()
     target = PersonFactory()
 
@@ -21,11 +25,13 @@ def test_mutual_friends(db):
 
     db.session.commit()
 
-    expected_mutual_friend_ids = [f.id for f in mutual_friends]
+    res = testapp.get('/people/' + str(instance.id) +
+                      '/?mutual_friends?target_id' + str(target.id))
 
-    results = mutual_friends
-    # results = instance.mutual_friends(target)
+    assert res.status_code == HTTPStatus.OK
 
-    assert len(results) == 3
-    for f in results:
+    expected_mutual_friend_ids = [f.id for f in res]
+
+    assert len(res) == 3
+    for f in res:
         assert f.id in expected_mutual_friend_ids
